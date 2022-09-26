@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Formulario Pago</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+    <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+    <script src="./js/vue@2.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/vue.resource/1.3.1/vue-resource.min.js?v=29"></script>
+</head>
+<body>
+    <div class='container' id="app_page">
+        <div class='window'>
+            <div class='order-info'>
+                <div class='order-info-content'>
+                    <h2>Resumen de Compra</h2>
+                    <div class='line'></div>
+                    <table class='order-table'>
+                        <tbody>
+                            <tr>
+                                <td><img src='https://dl.dropboxusercontent.com/s/sim84r2xfedj99n/%24_32.JPG' class='full-width'></img></td>
+                                <td><br><span class='thin'>Nike</span><br> Free Run 3.0 Women<br> <span class='thin small'> Color: Grey/Orange, Size: 10.5<br><br></span></td>
+                            </tr>
+                            <tr>
+                                <td><div class='price'>$99.95</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class='line'></div>
+                    <div class='total'>
+                        <span style='float:left;'>
+                        <!-- <div class='thin dense'>VAT 19%</div>
+                        <div class='thin dense'>Delivery</div> -->
+                        TOTAL
+                        </span>
+                        <span style='float:right; text-align:right;'>
+                        <!-- <div class='thin dense'>$68.75</div>
+                        <div class='thin dense'>$4.95</div> -->
+                        $435.55
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class='credit-info'>
+                <div class='credit-info-content' id="payment-form">
+                    <table class='half-input-table'>
+                        <tr>
+                            <td>Seleccione el Plan de Pago</td>
+                            <td>
+                                <select name="plan_payment" id="plan_payment">
+                                    <option value="">SELECCIONAR</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <img src='./images/cards1.png' width='250' class='credit-card-image' id='credit-card-image'></img>
+                    Número de Tarjeta
+                    <input class='input-field' v-model="numCard"></input>
+                    Nombre del titular
+                    <input class='input-field' v-model="cardHoldName"></input>
+                    Correo
+                    <input class='input-field' v-model="email"></input>
+                    Teléfono
+                    <input class='input-field' v-model="phone"></input>
+                    <table class='half-input-table'>
+                        <tr>
+                            <td>Fecha de Expiración<input placeholder="01" class='input-field' style="width:80px;" v-model="expDateMonth"></input>/<input class='input-field' placeholder="25" style="width:80px;" v-model="expDateYear"></input></td>
+                            <td>CVC<input class='input-field' v-model="csv"></input></td>
+                        </tr>
+                    </table>
+                    <div class="logos">
+                        <div class="logo-security-security">
+                            <div><small>Tus pagos se realizan de forma segura con encriptación de 256 bits</small></div>
+                            <div class="logo-security"></div>
+                        </div>
+                        <div class="logo-security-openpay">
+                            <div><small>Transacciones realizadas vía</small></div>
+                            <div class="logo-openpay"></div>
+                        </div>
+                    </div>
+                    <button class='pay-btn' @click="payment">Pagar</button>
+                </div>
+            </div>
+    </div>
+</body>
+<script src="./js/main.js"></script>
+</html>
