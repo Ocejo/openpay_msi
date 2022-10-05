@@ -30,9 +30,9 @@ h2 {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    background: -webkit-linear-gradient(#c5e5e5, #ccddf9);
-    background: linear-gradient(#c9e5e9, #ccddf9);
-}
+    background: -webkit-linear-gradient(#c7e1e1, #dee9fa);
+    background: linear-gradient(#d1e9ec, #d6e2f6);
+}   
 
 .dropdown-select.visible {
     display: block;
@@ -86,13 +86,13 @@ ul li:hover {
 }
 
 .half-input-table td:first-of-type {
-    border-right: 10px solid #4488dd;
+    border-right: 10px solid #fff;
     width: 50%;
 }
 
 .window {
-    height: 640px;
-    width: 800px;
+    height: 770px;
+    width: 790px;
     background: #fff;
     display: -webkit-box;
     display: -webkit-flex;
@@ -104,6 +104,8 @@ ul li:hover {
 }
 
 .order-info {
+    background-color: #2C3950;
+    color: #fff;
     height: 100%;
     width: 50%;
     padding-left: 25px;
@@ -153,7 +155,8 @@ ul li:hover {
 }
 
 .full-width {
-    width: 100%;
+    width: 60%;
+    color: white;
 }
 
 .pay-btn {
@@ -196,15 +199,15 @@ ul li:hover {
 }
 
 .input-field {
-    background: rgba(255, 255, 255, 0.1);
-    margin-bottom: 10px;
+    background: rgba(124, 123, 123, 0.1);
+    margin-bottom: 8px;
     margin-top: 3px;
     line-height: 1.5em;
     font-size: 20px;
     font-size: 1.3rem;
     border: none;
     padding: 5px 10px 5px 10px;
-    color: #fff;
+    color: #000;
     box-sizing: border-box;
     width: 100%;
     margin-left: auto;
@@ -212,14 +215,14 @@ ul li:hover {
 }
 
 input::placeholder{
-    color: rgba(214, 209, 209, 0.852);
+    color: rgba(183, 179, 179, 0.852);
 }
 
 .credit-info {
-    background: #4488dd;
+    background: #fff;
     height: 100%;
     width: 50%;
-    color: #eee;
+    color: #000;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     -ms-flex-pack: center;
@@ -269,10 +272,11 @@ input::placeholder{
 .credit-card-image {
     display: block;
     max-height: 80px;
+    width: 150px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 35px;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .credit-info-content {
@@ -334,6 +338,7 @@ input::placeholder{
         height: auto;
         padding-bottom: 100px;
         border-radius: 0px;
+        background-color: #2C3950;
     }
 
     .credit-info {

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Formulario Pago</title>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
     <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
@@ -17,16 +18,17 @@
         <div class='window'>
             <div class='order-info'>
                 <div class='order-info-content'>
+                    <img src="./images/LogoDxB.png" style="display: block; margin:auto" width="100">
                     <h2>Resumen de Compra</h2>
                     <div class='line'></div>
                     <table class='order-table'>
                         <tbody>
                             <tr>
-                                <td><img src='https://dl.dropboxusercontent.com/s/sim84r2xfedj99n/%24_32.JPG' class='full-width'></img></td>
-                                <td><br><span class='thin'>Nike</span><br> Free Run 3.0 Women<br> <span class='thin small'> Color: Grey/Orange, Size: 10.5<br><br></span></td>
+                                <td> <img src='./images/bag.svg' class='full-width'></td>
+                                <td><br><span class='thin' v-text="productText"></span></td>
                             </tr>
                             <tr>
-                                <td><div class='price'>$99.95</div></td>
+                                <td><div class='price' v-text="mountText"></div></td>
                             </tr>
                         </tbody>
                     </table>
@@ -37,35 +39,32 @@
                         <div class='thin dense'>Delivery</div> -->
                         TOTAL
                         </span>
-                        <span style='float:right; text-align:right;'>
+                        <span style='float:right; text-align:right;' v-text="mountText">
                         <!-- <div class='thin dense'>$68.75</div>
                         <div class='thin dense'>$4.95</div> -->
-                        $435.55
                         </span>
                     </div>
                 </div>
             </div>
             <div class='credit-info'>
                 <div class='credit-info-content' id="payment-form">
-                    <table class='half-input-table'>
-                        <tr>
-                            <td>Seleccione el Plan de Pago</td>
-                            <td>
-                                <select name="plan_payment" id="plan_payment">
-                                    <option value="">SELECCIONAR</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                    <img src='./images/cards1.png' width='250' class='credit-card-image' id='credit-card-image'></img>
+                    Nombre(s)
+                    <input type="text" class='input-field' v-model="customer.name"></th>
+                    Apellidos
+                    <input type="text" class='input-field' v-model="customer.lastName">
+                    Correo
+                    <input type="text" class='input-field' v-model="customer.email">
+                    Teléfono
+                    <input type="text" class='input-field' v-model="customer.phone">
+                    <img src='./images/cards1.png' class='credit-card-image' id='credit-card-image'></img>
+                    Seleccione el Plan de Pago
+                    <select name="plan_payment" id="plan_payment" class='input-field' v-model="plan" style="font-size: 14px;">
+                        <option v-for="plan in plans" v-bind:value="plan.value">{{ plan.text }}</option>
+                    </select>
                     Número de Tarjeta
                     <input class='input-field' v-model="numCard"></input>
-                    Nombre del titular
+                    Nombre del Titular
                     <input class='input-field' v-model="cardHoldName"></input>
-                    Correo
-                    <input class='input-field' v-model="email"></input>
-                    Teléfono
-                    <input class='input-field' v-model="phone"></input>
                     <table class='half-input-table'>
                         <tr>
                             <td>Fecha de Expiración<input placeholder="01" class='input-field' style="width:80px;" v-model="expDateMonth"></input>/<input class='input-field' placeholder="25" style="width:80px;" v-model="expDateYear"></input></td>
@@ -82,7 +81,11 @@
                             <div class="logo-openpay"></div>
                         </div>
                     </div>
-                    <button class='pay-btn' @click="payment">Pagar</button>
+                    <button class='pay-btn'
+                        @click="payment" 
+                        :disabled="isDisabled" 
+                        v-text="btnText">
+                    </button>
                 </div>
             </div>
     </div>
