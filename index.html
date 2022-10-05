@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="https://seresderiqueza.com/wp-content/uploads/2021/03/unnamed.png" type="image/x-icon" />
     <title>Formulario Pago</title>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -20,29 +21,31 @@
                 <div class='order-info-content'>
                     <img src="./images/LogoDxB.png" style="display: block; margin:auto" width="100">
                     <h2>Resumen de Compra</h2>
-                    <div class='line'></div>
-                    <table class='order-table'>
-                        <tbody>
-                            <tr>
-                                <td> <img src='./images/bag.svg' class='full-width'></td>
-                                <td><br><span class='thin' v-text="productText"></span></td>
-                            </tr>
-                            <tr>
-                                <td><div class='price' v-text="mountText"></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class='line'></div>
+                    <div v-for="product in products">
+                        <div class='line'></div>
+                        <table class='order-table'>
+                            <tbody>
+                                <tr>
+                                    <td> <img src='./images/bag.svg' class='full-width'></td>
+                                    <td><br><span class='thin' v-text="product.name"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><div class='price' v-text="product.mount"></div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class='line'></div>
+                    </div>
+                    <div class="aviso-privacidad">
+                        <small>Tus datos personales se utilizarán para procesar tu pedido, mejorar tu experiencia en esta web y otrós propósitos descritos en nuestra <a href="https://seresderiqueza.com/aviso-de-privacidad/" target="_blank">Aviso de Privacidad</a></small>
+                    </div>
+                    <br>
+                    <div class="contacto">
+                        ¿Tienes Dudas? Contactanos: contacto@seresderiqueza.com
+                    </div>
                     <div class='total'>
-                        <span style='float:left;'>
-                        <!-- <div class='thin dense'>VAT 19%</div>
-                        <div class='thin dense'>Delivery</div> -->
-                        TOTAL
-                        </span>
-                        <span style='float:right; text-align:right;' v-text="mountText">
-                        <!-- <div class='thin dense'>$68.75</div>
-                        <div class='thin dense'>$4.95</div> -->
-                        </span>
+                        <span style='float:left;'>TOTAL</span>
+                        <strong><span style='float:right; text-align:right; color: #4488dd;' v-text="totalText"></span></strong>
                     </div>
                 </div>
             </div>
@@ -53,24 +56,29 @@
                     Apellidos
                     <input type="text" class='input-field' v-model="customer.lastName">
                     Correo
-                    <input type="text" class='input-field' v-model="customer.email">
+                    <input type="email" class='input-field' v-model="customer.email" v-on:keyup="emailValidate">
+                    <div v-if="emailError" style="text-align: center;"><small style="color:red;">Correo Invalido</small></div>
                     Teléfono
-                    <input type="text" class='input-field' v-model="customer.phone">
+                    <input type="phone" class='input-field' v-model="customer.phone">
                     <img src='./images/cards1.png' class='credit-card-image' id='credit-card-image'></img>
-                    Seleccione el Plan de Pago
-                    <select name="plan_payment" id="plan_payment" class='input-field' v-model="plan" style="font-size: 14px;">
-                        <option v-for="plan in plans" v-bind:value="plan.value">{{ plan.text }}</option>
-                    </select>
                     Número de Tarjeta
-                    <input class='input-field' v-model="numCard"></input>
+                    <input class='input-field' v-model="card.numCard"></input>
                     Nombre del Titular
-                    <input class='input-field' v-model="cardHoldName"></input>
+                    <input class='input-field' v-model="card.cardHoldName"></input>
                     <table class='half-input-table'>
                         <tr>
-                            <td>Fecha de Expiración<input placeholder="01" class='input-field' style="width:80px;" v-model="expDateMonth"></input>/<input class='input-field' placeholder="25" style="width:80px;" v-model="expDateYear"></input></td>
-                            <td>CVC<input class='input-field' v-model="csv"></input></td>
+                            <td>Fecha de Expiración<input placeholder="01" class='input-field' id="expDateMonth" v-model="card.expDateMonth"></input>/<input class='input-field' placeholder="25" id="expDateYear" v-model="card.expDateYear"></input></td>
+                            <td>CVC<input class='input-field' v-model="card.csv"></input></td>
                         </tr>
                     </table>
+                    Seleccione el Plan de Pago
+                    <select name="plan_payment" id="plan_payment" class='input-field' v-model="card.plan" style="font-size: 14px;">
+                        <option v-for="plan in plans" v-bind:value="plan.value">{{ plan.text }}</option>
+                    </select>
+                    <div id="terminosCondiciones">
+                        <div><input type="checkbox" v-model="terminosCondiciones"></div>
+                        <div> Acepto los Términos y Condiciones <a href="https://seresderiqueza.com/terminos-y-condiciones/" target="_blank" >Ver Términos y Condiciones</a></div>
+                    </div>
                     <div class="logos">
                         <div class="logo-security-security">
                             <div><small>Tus pagos se realizan de forma segura con encriptación de 256 bits</small></div>
@@ -88,6 +96,7 @@
                     </button>
                 </div>
             </div>
+        </div>
     </div>
 </body>
 <script src="./js/main.js"></script>

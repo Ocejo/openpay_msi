@@ -1,42 +1,44 @@
 var app = new Vue({
   el: "#app_page",
   data: {
-    numCard: "",
-    cardHoldName: "",
-    expDateMonth: "",
-    expDateYear: "",
-    csv: "",
-    plan: 0,
     isDisabled: false,
+    terminosCondiciones:false,
     btnText:'Pagar',
-    product:[],
-    productText:'none',
-    mountText:'$0',
-    mount:0,
-    plan:'',
+    totalText:'$0',
+    total:0,
     plans:[],
+    products:[],
+    emailError:false,
     customer: {
       name: "",
       lastName:"",
       email: "",
       phone: "",
+    },
+    card:{
+      numCard: "",
+      cardHoldName: "",
+      expDateMonth: "",
+      expDateYear: "",
+      csv: "",
+      plan: '',
     }
   },
   methods: {
     payment: function () {
       this.btnPagar('p');
-      if(!this.valideteForm()){
+      if(!this.valideteForm().validate){
         this.btnPagar('c');
-        Swal.fire("Error", 'Campos Requeridos', "error");
+        Swal.fire("Error", this.valideteForm().message, "error");
         return true;
       }
       OpenPay.token.create(
         {
-          card_number: this.numCard,
-          holder_name: this.cardHoldName,
-          expiration_year: this.expDateYear,
-          expiration_month: this.expDateMonth,
-          cvv2: this.csv,
+          card_number: this.card.numCard,
+          holder_name: this.card.cardHoldName,
+          expiration_year: this.card.expDateYear,
+          expiration_month: this.card.expDateMonth,
+          cvv2: this.card.csv,
         },
         this.onSuccess,
         this.onError
@@ -48,10 +50,10 @@ var app = new Vue({
       let post_data = {
         token: response.data.id,
         device_session_id: $("#deviceIdHiddenFieldName").val(),
-        plan: that.plan,
-        mount: that.mount,
+        plan: that.card.plan,
+        mount: that.total,
         customer: that.customer,
-        security: (this.mount > 5000) ? true : false,
+        security: (this.total > 5000) ? true : false,
       };
       this.$http.post("./app.php", JSON.stringify(post_data)).then(
         function (response) {
@@ -75,12 +77,32 @@ var app = new Vue({
       Swal.fire("Error", response.data.description, "error");
       console.error(response.data);
     },
+    emailValidate: function(){
+      var that = this; 
+      var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      var regOficial = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      if (reg.test(this.customer.email) && regOficial.test(this.customer.email)) {
+        that.emailError = false;
+        that.isDisabled = true;
+      } else if (reg.test(this.customer.email)) {
+        that.emailError = false;
+        that.isDisabled = true;
+      } else {
+        that.emailError = true;
+        that.isDisabled = false;
+      }
+    },
     valideteForm: function () {
       var validate = true;
-      if(this.plan==''){
-        validate = false
+      var message  = "";
+      if (!this.terminosCondiciones) {
+        validate = false;
+        message  = 'Para continuar debes aceptar los términos y condiciones';
       }
-      return validate;
+      return {
+        validate: validate,
+        message: message,
+      };
     },
     btnPagar: function (status) {
       const that = this,
@@ -111,27 +133,31 @@ var app = new Vue({
           return 12
           break;
       }
-  }
+    }
   },
   created: function () {
     const params = new URLSearchParams(location.search),
-        monto = params.get('mount'),
+        montos = params.get('mount'),
         ref = params.get('ref'),
-        product = params.get('product'),
+        products = params.get('product'),
         plans = params.get('plans'),
         that = this;
-    if(monto==null||product==null||plans==null){
+    if(montos==null||products==null||plans==null){
       Swal.fire("Error", 'Parametros necesarios', "error");
       that.btnPagar('c');
     }else{
-      let planArr = plans.split(',');
-      planArr.forEach((plan, idx) => {
-          if (idx == 0) that.plan = that.descript(plan);
+      let plansArr    = plans.split(','),
+          productsArr = products.split(','),
+          mountsArr   = montos.split(',');
+      plansArr.forEach((plan, idx) => {
+          if (idx == 0) that.card.plan = that.descript(plan);
           that.plans.push({text:that.descript(plan)+' Meses', value:that.descript(plan)});
       });
-      that.productText = product;
-      that.mountText = '$'+monto;
-      that.mount = parseFloat(monto);
+      productsArr.forEach((product, idx) => {
+          that.total +=  parseFloat(mountsArr[idx]);
+          that.products.push({name: product, mount: Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(mountsArr[idx]) + ' MXN'});
+      });
+      this.totalText = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(this.total) + ' MXN';
     }
   },
   mounted: function () {},
