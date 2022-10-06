@@ -1,5 +1,5 @@
 <?php
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 use Openpay\Data\Openpay as Openpay;
 header('Content-Type: application/json');
 $data = json_decode(file_get_contents('php://input'), true);

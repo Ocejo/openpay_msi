@@ -55,7 +55,7 @@ var app = new Vue({
         customer: that.customer,
         security: (this.total > 5000) ? true : false,
       };
-      this.$http.post("./app.php", JSON.stringify(post_data)).then(
+      this.$http.post("./app/Pago.php", JSON.stringify(post_data)).then(
         function (response) {
           that.btnPagar('c');
           if(response.body.success){
@@ -83,13 +83,13 @@ var app = new Vue({
       var regOficial = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
       if (reg.test(this.customer.email) && regOficial.test(this.customer.email)) {
         that.emailError = false;
-        that.isDisabled = true;
+        that.isDisabled = false;
       } else if (reg.test(this.customer.email)) {
         that.emailError = false;
-        that.isDisabled = true;
+        that.isDisabled = false;
       } else {
         that.emailError = true;
-        that.isDisabled = false;
+        that.isDisabled = true;
       }
     },
     valideteForm: function () {
