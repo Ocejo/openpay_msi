@@ -17,6 +17,7 @@
     />
     <link rel="stylesheet" href="./css/success.css">
     <title>Formulario Pago</title>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/vue@2.js"></script>
     <script
       type="text/javascript"
@@ -24,22 +25,23 @@
     ></script>
   </head>
   <body class="text-center">
-    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column" id="app_page">
       <header class="masthead mb-auto">
         <div>
-          <img src="./images/LogoDxB.png" width="170" />
+          <img src="./images/LogoDxB.png" width="160" />
         </div>
       </header>
-
       <main role="main" class="inner cover">
-        <h1 class="cover-heading">¡Gracias!</h1>
-        <p class="lead">
-          En breve te estaremos haciendo llegar un correo con los datos y la
-          confirmación del tu pago. Recuerda revisar tu bandeja de spam.
-        </p>
-        <p class="lead">
-          <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
-        </p>
+        <div class="card text-center" v-if="!loading">
+          <div class="card-header" v-text="title"></div>
+          <div class="card-body">
+            <img v-bind:src="src" width="85" style="margin-bottom: 10px;">
+            <p class="card-text" v-text="description"></p>
+          </div>
+          <div class="card-footer text-muted">
+            contacto@seresderiqueza.com
+          </div>
+        </div>
       </main>
       <footer class="mastfoot mt-auto">
         <div class="inner">
@@ -67,4 +69,5 @@
       crossorigin="anonymous"
     ></script>
   </body>
+  <script src="./js/success.js"></script>
 </html>
