@@ -59,16 +59,25 @@
                     <input type="email" class='input-field' v-model="customer.email" v-on:keyup="emailValidate">
                     <div v-if="emailError" style="text-align: center;"><small style="color:red;">Correo Invalido</small></div>
                     Teléfono
-                    <input type="phone" class='input-field' v-model="customer.phone">
+                    <input type="tel" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" maxlength="10" class='input-field' v-model="customer.phone">
                     <img src='./images/cards1.png' class='credit-card-image' id='credit-card-image'></img>
                     Número de Tarjeta
-                    <input class='input-field' v-model="card.numCard"></input>
+                    <input type="text" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" maxlength="16" class='input-field' v-model="card.numCard"></input>
                     Nombre del Titular
                     <input class='input-field' v-model="card.cardHoldName"></input>
                     <table class='half-input-table'>
                         <tr>
-                            <td>Fecha de Expiración<input placeholder="01" class='input-field' id="expDateMonth" v-model="card.expDateMonth"></input>/<input class='input-field' placeholder="25" id="expDateYear" v-model="card.expDateYear"></input></td>
-                            <td>CVC<input class='input-field' v-model="card.csv"></input></td>
+                            <td>
+                                Fecha de Expiración 
+                                <select name="expDateMonth" id="expDateMonth" class='input-field' v-model="card.expDateMonth" style="font-size: 14px;">
+                                    <option v-for="month in months" v-bind:value="month.value">{{ month.text }}</option>
+                                </select>
+                                <select name="expDateYear" id="expDateYear" class='input-field' v-model="card.expDateYear" style="font-size: 14px;">
+                                    <option v-for="year in years" v-bind:value="year.value">{{ year.text }}</option>
+                                </select>
+                            <td>
+                                CVC<input type="text" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" maxlength="4" class='input-field' v-model="card.csv"></input>
+                            </td>
                         </tr>
                     </table>
                     Seleccione el Plan de Pago

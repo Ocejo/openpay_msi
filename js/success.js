@@ -55,8 +55,8 @@ var app = new Vue({
                             Swal.fire("Error", err.body.message, "error");
                         }
                     );
-                    that.loading = false;
                     clearInterval(timerInterval);
+                    that.loading = false;
                 }
                 }).then((result) => {
                 if (result.dismiss === Swal.DismissReason.timer) {

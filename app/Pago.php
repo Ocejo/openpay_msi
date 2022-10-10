@@ -12,7 +12,9 @@ try {
         'email'        => $data['customer']['email']
     );
     $payments      = array('payments' => $data['plan']);
-    $security      = array('use_3d_secure' => $data['security'], 'redirect_url' => 'http://localhost:8888/openpay_msi/success.html');
+    $url           = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://'.$_SERVER['HTTP_HOST'].'/openpay_msi/success.html';
+    $security      = array('use_3d_secure' => $data['security'], 'redirect_url' => $url);
+    
     $chargeRequest = array(
         'method'            => 'card',
         'source_id'         => $data['token'],
@@ -23,11 +25,11 @@ try {
         'payment_plan'      => $payments,
         'customer'          => $customer,
         'use_3d_secure'     => $data['security'],
-        'redirect_url'      => 'http://localhost:8888/openpay_msi/success.html'
+        'redirect_url'      => $data['redirect_url']
     );
     $charge = $openpay->charges->create($chargeRequest);
     if ($charge->status == 'completed') {
-        echo json_encode(['success' => true, 'message' => 'Pago completado', 'url' => '']);
+        echo json_encode(['success' => true, 'message' => 'Pago completado', 'url' => $url . '?id=' . $charge->id]);
     } else if ($charge->status == 'charge_pending') {
         echo json_encode(['success' => true, 'message' => 'Te dirigiremos para que ingreses tu clave', 'url' => $charge->payment_method->url]);
     } else {

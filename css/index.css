@@ -232,11 +232,11 @@ ul li:hover {
 }
 
 #expDateYear{
-    width: 60px;
+    width: 80px;
 }
 
 #expDateMonth{
-    width: 60px;
+    width: 80px;
 }
 
 input::placeholder{
@@ -329,7 +329,7 @@ input::placeholder{
 }
 
 .logo-security-openpay div.logo-openpay {
-    background-image: url("./images/openpay.png");
+    background-image: url("../images/openpay.png");
     background-repeat: no-repeat;
     font-weight: 400;
     margin-left: 20px;
@@ -345,7 +345,7 @@ input::placeholder{
 }
 
 .logo-security-security div.logo-security {
-    background-image: url("./images/security.png");
+    background-image: url("../images/security.png");
     background-position: left bottom;
     background-repeat: no-repeat;
     font-weight: 400;

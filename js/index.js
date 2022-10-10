@@ -22,7 +22,9 @@ var app = new Vue({
       expDateYear: "",
       csv: "",
       plan: '',
-    }
+    },
+    months:[],
+    years:[]
   },
   methods: {
     payment: function () {
@@ -59,8 +61,29 @@ var app = new Vue({
         function (response) {
           that.btnPagar('c');
           if(response.body.success){
-            Swal.fire("Correcto", response.body.message, "success");
-            if(response.body.url!='') window.location.href = response.body.url;
+            let timerInterval
+            Swal.fire({
+              title: 'Procesando Transacción',
+              html: 'Cargando...',
+              timer: 2000,
+              timerProgressBar: false,
+              didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                  b.textContent = Swal.getTimerLeft()
+                }, 100)
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+                window.location.href = response.body.url;
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+              }
+            })
           }else{
             Swal.fire("Error", response.body.message, "error");
           }
@@ -159,6 +182,22 @@ var app = new Vue({
       });
       this.totalText = Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(this.total) + ' MXN';
     }
+    let months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+    for (let index = 0; index < 10; index++) {
+      let arrYear = {
+          text: new Date().getFullYear() + index,
+          value: parseFloat(new Date().getFullYear().toString().substr(-2)) + index
+      };
+      that.years.push(arrYear);
+    }
+    months.forEach((value,index)=>{
+      let arrMonth = {
+          text: value,
+          value: value,
+      };
+      that.months.push(arrMonth);
+    });
+    console.log(this.months);
   },
   mounted: function () {},
 });
