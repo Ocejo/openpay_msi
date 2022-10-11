@@ -56,6 +56,7 @@ var app = new Vue({
         mount: that.total,
         customer: that.customer,
         security: (this.total > 5000) ? true : false,
+        products: that.products
       };
       this.$http.post("./app/Pago.php", JSON.stringify(post_data)).then(
         function (response) {
@@ -91,7 +92,7 @@ var app = new Vue({
         function (err) {
           this.btnPagar('c');
           console.error(err);
-          Swal.fire("Error", err.body, "error");
+          Swal.fire("Error", err.body.message, "error");
         }
       );
     },

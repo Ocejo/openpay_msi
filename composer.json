@@ -1,5 +1,6 @@
 {
     "require": {
-        "openpay/sdk": "^3.0"
+        "openpay/sdk": "^3.0",
+        "guzzlehttp/guzzle": "^6.0"
     }
 }

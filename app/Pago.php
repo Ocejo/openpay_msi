@@ -1,8 +1,15 @@
 <?php
 require_once '../vendor/autoload.php';
+use GuzzleHttp\Client as Guzzle;
 use Openpay\Data\Openpay as Openpay;
+use Openpay\Resources\OpenpayErrors;
 header('Content-Type: application/json');
-$data = json_decode(file_get_contents('php://input'), true);
+$data     = json_decode(file_get_contents('php://input'), true);
+$products = '';
+for ($i=0; $i < count($data['products']); $i++) {
+    $cont = ($i + 1 < count($data['products'])) ? '||' : '';
+    $products .= $data['products'][$i]['name'] . $cont;
+}
 try {
     $openpay  = Openpay::getInstance('mmey69zmnv0ub7zhny23', 'sk_1dc6b7d82dd24b8bac53bfaad6f9ec70');
     $customer = array(
@@ -20,12 +27,12 @@ try {
         'source_id'         => $data['token'],
         'amount'            => $data['mount'],
         'currency'          => 'MXN',
-        'description'       => 'Cargo inicial a mi merchant',
+        'description'       => 'Producto:'.$products,
         'device_session_id' => $data['device_session_id'],
         'payment_plan'      => $payments,
         'customer'          => $customer,
-        'use_3d_secure'     => $data['security'],
-        'redirect_url'      => $data['redirect_url']
+        'use_3d_secure'     => $security['use_3d_secure'],
+        'redirect_url'      => $security['redirect_url']
     );
     $charge = $openpay->charges->create($chargeRequest);
     if ($charge->status == 'completed') {
@@ -36,11 +43,39 @@ try {
         echo json_encode(['success' => false, 'message' => $charge->description]);
     }
 } catch (\Throwable$th) {
-    echo '<pre>';
-    die(var_dump($th));
-    foreach (json_decode($th) as $key => $value) {
-        echo '<pre>';
-        die(var_dump($value));
+    http_response_code(400);
+    echo json_encode([
+        'success' => false,
+        'message' => OpenpayErrors::getErrors()[$th->getCode()],
+        'code'    => 400
+    ]);
+    sendResponse(OpenpayErrors::getErrors()[$th->getCode()]);
+}
+
+function sendResponse($error)
+{
+    $data     = json_decode(file_get_contents('php://input'), true);
+    try {
+        $client   = new Guzzle();
+        $fecha    = date("Y-m-d");
+        $response = $client->request('POST', 'https://hook.integromat.com/xbudrcblq0rdjkstn69umr0jz5nfne0k', [
+            'form_params' => [
+                'nombre'        => $data['customer']['name'],
+                'correo'        => $data['customer']['email'],
+                'telefono'      => $data['customer']['phone'],
+                "fecha_pago"    => $fecha,
+                "monto"         => $data['mount'],
+                "referido"      => null,
+                "plan"          => $data['plan'],
+                "type"          => 'form-msi',
+                "type-card"     => '',
+                "digitos"       => '',
+                "error"         => true,
+                "error_message" => $error,
+                "productos"     => $data['products']
+            ]
+        ]);
+    } catch (\Throwable$th) {
+        throw $th;
     }
-    // echo json_encode(['success' => false, 'message' => $th]);
 }
