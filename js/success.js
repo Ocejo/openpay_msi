@@ -14,7 +14,6 @@ var app = new Vue({
         loadingFt:function(){
             this.contador++;
             const that = this;
-            console.log(this.contador);
             if (this.contador<4) {
                 var timerInterval;
                 const params = new URLSearchParams(location.search),
@@ -25,43 +24,43 @@ var app = new Vue({
                 }
                 that.loading = true;
                 Swal.fire({
-                title: 'Verificando la Transacción',
-                html: 'Esto puede tardar unos minutos...',
-                timer: 5000,
-                timerProgressBar: false,
-                didOpen: () => {
-                    Swal.showLoading()
-                    const b = Swal.getHtmlContainer().querySelector('b')
-                    timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                    }, 100)
-                },
-                willClose: () => {
-                    let post_data = {
-                        id:id_transaccion
-                    }
-                    that.$http.post("./app/Transaccion.php", JSON.stringify(post_data)).then(
-                        function (res) {
-                            if(res.body.code == '2811') {
-                                that.loadingFt();
-                                return true
-                            }
-                            that.description = res.body.message;
-                            that.src += (res.body.success) ? 'true.svg' : 'false.svg';
-                            that.title += (res.body.success) ? 'EXITOSO' : 'DECLINADO';
-                        },
-                        function (err) {
-                            console.error(err);
-                            Swal.fire("Error", err.body.message, "error");
+                    title: 'Verificando la Transacción',
+                    html: 'Esto puede tardar unos minutos...',
+                    timer: 5000,
+                    timerProgressBar: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                        b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        let post_data = {
+                            id:id_transaccion
                         }
-                    );
-                    clearInterval(timerInterval);
-                    that.loading = false;
-                }
+                        that.$http.post("./app/Transaccion.php", JSON.stringify(post_data)).then(
+                            function (res) {
+                                if(res.body.code == '2811') {
+                                    that.loadingFt();
+                                    return true
+                                }
+                                that.description = res.body.message;
+                                that.src += (res.body.success) ? 'true.svg' : 'false.svg';
+                                that.title += (res.body.success) ? 'EXITOSO' : 'DECLINADO';
+                            },
+                            function (err) {
+                                console.error(err);
+                                Swal.fire("Error", err.body.message, "error");
+                            }
+                        );
+                        clearInterval(timerInterval);
+                        that.loading = false;
+                    }
+                    
                 }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    console.log('I was closed by the timer')
-                }
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                    }
                 });
             }else{
                 that.description = 'Tu pago aun no ha sido procesado';

@@ -123,6 +123,10 @@ var app = new Vue({
         validate = false;
         message  = 'Para continuar debes aceptar los términos y condiciones';
       }
+      if (this.customer.name == '' || this.customer.last_name == '' || this.customer.email == '' || this.customer.phone == '') {
+        validate = false;
+        message  = 'Complete los campos requeridos';
+      }
       return {
         validate: validate,
         message: message,

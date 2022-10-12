@@ -51,14 +51,14 @@
             </div>
             <div class='credit-info'>
                 <div class='credit-info-content' id="payment-form">
-                    Nombre(s)
+                    Nombre(s)*
                     <input type="text" class='input-field' v-model="customer.name"></th>
-                    Apellidos
+                    Apellidos*
                     <input type="text" class='input-field' v-model="customer.lastName">
-                    Correo
+                    Correo*
                     <input type="email" class='input-field' v-model="customer.email" v-on:keyup="emailValidate">
                     <div v-if="emailError" style="text-align: center;"><small style="color:red;">Correo Invalido</small></div>
-                    Teléfono
+                    Teléfono*
                     <input type="tel" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" maxlength="10" class='input-field' v-model="customer.phone">
                     <img src='./images/cards1.png' class='credit-card-image' id='credit-card-image'></img>
                     Número de Tarjeta
