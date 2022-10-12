@@ -50,7 +50,7 @@ function sendResponse($data)
     try {
         $client   = new Guzzle();
         $fecha    = date("Y-m-d");
-        $response = $client->request('POST', 'https://hook.integromat.com/xbudrcblq0rdjkstn69umr0jz5nfne0k', [
+        $response = $client->request('POST', 'https://hook.integromat.com/d146vbvksofvhvvjae5ayr6xns9o76ej', [
             'form_params' => [
                 'nombre'        => $data->customer->name,
                 'correo'        => $data->customer->email,

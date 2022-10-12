@@ -19,7 +19,7 @@ try {
         'email'        => $data['customer']['email']
     );
     $payments      = array('payments' => $data['plan']);
-    $url           = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://'.$_SERVER['HTTP_HOST'].'/openpay_msi/success.html';
+    $url           = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://'.$_SERVER['HTTP_HOST'].'/success.html';
     $security      = array('use_3d_secure' => $data['security'], 'redirect_url' => $url);
     
     $chargeRequest = array(
@@ -55,10 +55,14 @@ try {
 function sendResponse($error)
 {
     $data     = json_decode(file_get_contents('php://input'), true);
+    $products = [];
+    for ($i=0; $i < count($data['products']); $i++) {
+        array_push($products,$data['products'][$i]['name']);
+    }
     try {
         $client   = new Guzzle();
         $fecha    = date("Y-m-d");
-        $response = $client->request('POST', 'https://hook.integromat.com/xbudrcblq0rdjkstn69umr0jz5nfne0k', [
+        $response = $client->request('POST', 'https://hook.integromat.com/d146vbvksofvhvvjae5ayr6xns9o76ej', [
             'form_params' => [
                 'nombre'        => $data['customer']['name'],
                 'correo'        => $data['customer']['email'],
@@ -72,7 +76,7 @@ function sendResponse($error)
                 "digitos"       => '',
                 "error"         => true,
                 "error_message" => $error,
-                "productos"     => $data['products']
+                "productos"     => $products
             ]
         ]);
     } catch (\Throwable$th) {
