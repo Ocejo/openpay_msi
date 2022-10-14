@@ -5,6 +5,8 @@ html {
     height: 100%;
     margin: 0;
     font-family: lato;
+    background: -webkit-linear-gradient(#c7e1e1, #dee9fa);
+    background: linear-gradient(#d1e9ec, #d6e2f6);
 }
 
 h2 {
@@ -91,7 +93,7 @@ ul li:hover {
 }
 
 .window {
-    height: 770px;
+    height: 710px;
     width: 790px;
     background: #fff;
     display: -webkit-box;

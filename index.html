@@ -43,6 +43,17 @@
                     <div class="contacto">
                         ¿Tienes Dudas? Contactanos: contacto@seresderiqueza.com
                     </div>
+                    <br>
+                    <!-- <div class="logos">
+                        <div class="logo-security-security">
+                            <div><small>Tus pagos se realizan de forma segura con encriptación de 256 bits</small></div>
+                            <div class="logo-security"></div>
+                        </div>
+                        <div class="logo-security-openpay">
+                            <div><small>Transacciones realizadas vía</small></div>
+                            <div class="logo-openpay"></div>
+                        </div>
+                    </div> -->
                     <div class='total'>
                         <span style='float:left;'>TOTAL</span>
                         <strong><span style='float:right; text-align:right; color: #4488dd;' v-text="totalText"></span></strong>
@@ -87,16 +98,6 @@
                     <div id="terminosCondiciones">
                         <div><input type="checkbox" v-model="terminosCondiciones"></div>
                         <div> Acepto los Términos y Condiciones <a href="https://seresderiqueza.com/terminos-y-condiciones/" target="_blank" >Ver Términos y Condiciones</a></div>
-                    </div>
-                    <div class="logos">
-                        <div class="logo-security-security">
-                            <div><small>Tus pagos se realizan de forma segura con encriptación de 256 bits</small></div>
-                            <div class="logo-security"></div>
-                        </div>
-                        <div class="logo-security-openpay">
-                            <div><small>Transacciones realizadas vía</small></div>
-                            <div class="logo-openpay"></div>
-                        </div>
                     </div>
                     <button class='pay-btn'
                         @click="payment" 
